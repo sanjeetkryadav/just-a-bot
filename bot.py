@@ -71,6 +71,12 @@ async def on_message(message):
     # Dynamic delete command
     prefix = await get_prefix(bot, message)
     if message.content.startswith(f'{prefix}delete'):
+        # Check if user has administrator permissions
+        if not message.author.guild_permissions.administrator:
+            confirm_msg = await message.channel.send("❌ You need administrator permissions to use this command!")
+            await discord.utils.sleep_until(discord.utils.utcnow() + timedelta(seconds=3))
+            await confirm_msg.delete()
+            return
         parts = message.content.split()
         if len(parts) == 2:
             arg = parts[1].strip().lower()
@@ -124,6 +130,10 @@ bot.tree.add_command(sendthis)
 
 @bot.command(name='setprefix')
 async def setprefix(ctx, new_prefix: str):
+    # Check if user has administrator permissions
+    if not ctx.author.guild_permissions.administrator:
+        await ctx.send("❌ You need administrator permissions to change the prefix!")
+        return
     guild_id = ctx.guild.id if ctx.guild else None
     save_prefix(guild_id, new_prefix)
     await ctx.send(f'Prefix for this server changed to `{new_prefix}`!')
