@@ -4,6 +4,7 @@ from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
+from keep_alive import keep_alive
 import json
 
 load_dotenv()
@@ -139,4 +140,5 @@ async def setprefix(ctx, new_prefix: str):
     save_prefix(guild_id, new_prefix)
     await ctx.send(f'Prefix for this server changed to `{new_prefix}`!')
 
+keep_alive()
 bot.run(TOKEN) 
