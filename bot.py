@@ -112,14 +112,12 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # /greet command
-greet_cmd = app_commands.Command(
-    name="greet",
-    description="Sends a greeting message.",
-    callback=lambda interaction: interaction.response.send_message("hey how are you doing")
-)
+@app_commands.command(name="greet", description="Sends a greeting message.")
+async def greet(interaction: discord.Interaction):
+    await interaction.response.send_message("hey how are you doing")
 if guild:
-    greet_cmd.guilds = [guild]
-bot.tree.add_command(greet_cmd)
+    greet.guilds = [guild]
+bot.tree.add_command(greet)
 
 # /sendthis command
 @app_commands.command(name="sendthis", description="Send your input as a message.")
